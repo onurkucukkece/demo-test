@@ -11,7 +11,7 @@ name: Staging Deploy
 on:
   push:
     branches:
-      - 'SLR-731/staging-without-deploying-to-production'
+      - staging-test
 
 # Only allow 1 deploy at the same time
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#concurrency
