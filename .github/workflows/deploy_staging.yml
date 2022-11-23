@@ -26,6 +26,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get file list
+        run: |
+          ls
+
       - name: Get latest migration timestamp on master
         id: migration_timestamp1
         run: |
