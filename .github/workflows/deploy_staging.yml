@@ -47,7 +47,6 @@ jobs:
 
       - name: Rebase on master
         run: |
-          git checkout main
           git branch --show
           git checkout staging-test
           git rebase main
