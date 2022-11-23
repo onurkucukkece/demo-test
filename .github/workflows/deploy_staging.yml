@@ -49,6 +49,7 @@ jobs:
         run: |
           git checkout main
           git branch --show
+          git pull origin main
           git checkout staging-test
           git rebase main
 
