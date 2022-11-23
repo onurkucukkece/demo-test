@@ -25,7 +25,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
+        with:
+          ref: main
+ 
       - name: Get branch name
         run: |
           git branch --show
