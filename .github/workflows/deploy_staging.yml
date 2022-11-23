@@ -26,25 +26,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Get file list
+      - name: Get branch name
         run: |
-          ls
-          find "db/migrate"
-          find "db/migrate" | sort -nn
-          find "db/migrate" | sort -nn | tail -n1
-      - name: Get latest migration timestamp on master
-        id: migration_timestamp1
-        run: |
-          echo $(find "db/migrate" | sort -nn | tail -n1 | cut -c 12-25)
+          git branch --show
 
       - name: Get latest migration timestamp on master
         id: migration_timestamp
         run: |
-          export MIGRATION_TIMESTAMP=$(find "db/migrate" | sort -nn | tail -n1 | cut -c 12-25)
+          find "db/migrate" | sort -nn | tail -n1 | cut -c 12-25
 
       - name: Output timestamp
         run: |
-          echo $MIGRATION_TIMESTAMP
+          echo ${{ steps.migration_timestamp.outputs.stdout }} 
 
       - uses: actions/checkout@v3
         with:
