@@ -33,11 +33,11 @@ jobs:
       - name: Get latest migration timestamp on master
         id: migration_timestamp
         run: |
-          find "db/migrate" | sort -nn | tail -n1 | cut -c 12-25
+          echo "MIGRATION_TIMESTAMP=$(find "db/migrate" | sort -nn | tail -n1 | cut -c 12-25)" >> $GITHUB_OUTPUT
 
       - name: Output timestamp
         run: |
-          echo ${{ steps.migration_timestamp.outputs.stdout }} 
+          echo ${{ steps.migration_timestamp.outputs.MIGRATION_TIMESTAMP }} 
 
       - uses: actions/checkout@v3
         with:
