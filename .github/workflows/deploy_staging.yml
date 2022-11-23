@@ -49,9 +49,9 @@ jobs:
         run: |
           env
 
-      - name: Docker login to ECR
-        run: |
-          aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 656791784641.dkr.ecr.eu-central-1.amazonaws.com
+      # - name: Docker login to ECR
+      #   run: |
+      #     aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 656791784641.dkr.ecr.eu-central-1.amazonaws.com
 
       # - name: Prepare
       #   id: prep
