@@ -29,11 +29,11 @@ jobs:
       - name: Get latest migration timestamp on master
         id: migration_timestamp
         run: |
-          find "db/migrate" | sort -nn | tail -n1 | grep -E '\d{14}' | cut -c 12-25
+          export MIGRATION_TIMESTAMP = $(find "db/migrate" | sort -nn | tail -n1 | grep -E '\d{14}' | cut -c 12-25)
 
       - name: Output timestamp
         run: |
-          echo ${{ steps.migration_timestamp.outputs.stdout }} 
+          echo $MIGRATION_TIMESTAMP
 
       - uses: actions/checkout@v3
         with:
@@ -43,7 +43,7 @@ jobs:
         run: |
           git branch --show
           git checkout staging-test
-          # git rebase origin master
+          git rebase master
 
       - name: Output environment variables
         run: |
