@@ -48,7 +48,7 @@ jobs:
 
       - name: Checkout staging and rebase on master
         run: |
-          git checkout staging-test
+          git checkout --progress --force -B staging-test refs/remotes/origin/staging-test
           git branch --show
           git rebase main
 
