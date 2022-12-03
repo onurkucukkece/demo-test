@@ -53,7 +53,7 @@ jobs:
           git checkout --progress --force -B staging-test refs/remotes/origin/staging-test
           git branch --show
           git rebase main
-
+          git push --force origin staging-test
       - name: Output environment variables
         run: |
           env
