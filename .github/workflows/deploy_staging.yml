@@ -41,13 +41,14 @@ jobs:
         run: |
           echo ${{ steps.migration_timestamp.outputs.MIGRATION_TIMESTAMP }} 
 
-      - uses: actions/checkout@v3
-        with:
-          ref: staging-test
-          clean: false
+#       - uses: actions/checkout@v3
+#         with:
+#           ref: staging-test
+#           fetch-depth: 10
 
-      - name: Rebase on master
+      - name: Checkout staging and rebase on master
         run: |
+          git checkout staging-test
           git branch --show
           git rebase main
 
