@@ -39,6 +39,7 @@ jobs:
         run: |
           KEY_TAG=asd123
           echo "key_tag=${KEY_TAG}" >> $GITHUB_OUTPUT
+
       - name: Output test
         run: |
           echo ${{ steps.test_step.outputs.key_tag }} 
