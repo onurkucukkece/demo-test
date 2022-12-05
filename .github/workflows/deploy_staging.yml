@@ -25,11 +25,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
+        name: Checkout master
+        with:
+          ref: main
+          token: ${{ secrets.USER_TOKEN }}
+ 
       - name: Get branch name
         run: |
           git branch --show
 
+      - name: Test step
+        id: test_step
+        run: |
+          KEY_TAG=asd123
+          echo "key_tag=${KEY_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Output test
+        run: |
+          echo ${{ steps.test_step.outputs.key_tag }} 
       - name: Get latest migration timestamp on master
         id: migration_timestamp
         run: |
@@ -39,75 +52,16 @@ jobs:
         run: |
           echo ${{ steps.migration_timestamp.outputs.MIGRATION_TIMESTAMP }} 
 
-      - uses: actions/checkout@v3
-        with:
-          ref: staging-test
-
-      - name: Rebase on master
+      - name: Checkout staging and rebase on master
         run: |
-          git checkout main
+          git fetch
+          git checkout --progress --force -B staging-test refs/remotes/origin/staging-test
           git branch --show
-          git checkout staging-test
           git rebase main
-
+          git push --force origin staging-test
       - name: Output environment variables
         run: |
           env
-
-      # - name: Docker login to ECR
-      #   run: |
-      #     aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 656791784641.dkr.ecr.eu-central-1.amazonaws.com
-
-      # - name: Prepare
-      #   id: prep
-      #   run: |
-      #     IMAGE="656791784641.dkr.ecr.eu-central-1.amazonaws.com/one:github-staging_${GITHUB_SHA}"
-      #     echo ::set-output name=tag::${IMAGE}
-      #
-      # - name: Set up Docker Buildx
-      #   id: buildx
-      #   uses: docker/setup-buildx-action@master
-      #   with:
-      #     install: true
-      #
-      # - name: Cache Docker layers
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: /tmp/.buildx-cache
-      #     key: ${{ runner.os }}-multi-buildx-v2-${{ github.sha }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-multi-buildx-v2
-      #
-      # - name: Build staging image
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: .
-      #     builder: ${{ steps.buildx.outputs.name }}
-      #     file: Dockerfile.github
-      #     target: deploy
-      #     load: true
-      #     tags: ${{ steps.prep.outputs.tag }}
-      #     secrets: |
-      #       AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-      #       AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     cache-from: type=local,src=/tmp/.buildx-cache
-      #     cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
-      #
-      #   # Temp fix
-      #   # https://github.com/docker/build-push-action/issues/252
-      #   # https://github.com/moby/buildkit/issues/1896
-      # -  name: Move cache
-      #    run: |
-      #       rm -rf /tmp/.buildx-cache
-      #       mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-      #
-      # - name: Check if the code has been succesfully built
-      #   run: |
-      #     script/check_codebuild_status.rb $GITHUB_SHA
-      #
-      # - name: Push staging image
-      #   run: |
-      #     docker push ${{ steps.prep.outputs.tag }}
 
   # deploy:
   #   name: Deploy to staging
