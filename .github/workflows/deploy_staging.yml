@@ -28,7 +28,7 @@ jobs:
         name: Checkout master
         with:
           ref: main
-          token: ${{ secret.USER_TOKEN }}
+          token: ${{ secrets.USER_TOKEN }}
  
       - name: Get branch name
         run: |
