@@ -62,6 +62,9 @@ jobs:
       - name: Output environment variables
         run: |
           env
+      - name: Delete staging branch
+        run: |
+          git push origin --delete staging-test
 
   # deploy:
   #   name: Deploy to staging
