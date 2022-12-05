@@ -24,15 +24,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set git user
-        run: |
-          echo ${{ github.actor }}
-          git config --global user.email "developers@springest.com"
-          git config --global user.name "Springest"
       - uses: actions/checkout@v3
         name: Checkout master
         with:
           ref: main
+          token: ${{ secret.USER_TOKEN }}
  
       - name: Get branch name
         run: |
